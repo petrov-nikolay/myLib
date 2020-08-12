@@ -11,3 +11,6 @@ are recomended but not mandatory
 /CSS/Icons.css will not work withoout the files from /CSS/Fonts/Material-icons/ 
 
 the rest of the files are just the source code. 
+
+Best to download the entire folder and open it with VSCode
+
