@@ -23,13 +23,23 @@ $color_li_hover: $color_primary_hover;
         top: 7px;
     }
 
+    .header {
+        border: 1px solid $color_border;
+        border-radius: .25rem;
+    }
+
+    .container {
+        z-index: 1000;
+        background-color: #fff;
+        padding: .2rem 0 .2rem 0;
+        margin: 0.2rem 0 0 0;
+    }
+
     ul {
         display: none;
         z-index: 1000;
         border: 1px solid $color_border;
         border-radius: .25rem;
-        margin: 0.2rem 0 0 0;
-        padding: .2rem 0 .2rem 0;
         background-color: #fff;
     }
 

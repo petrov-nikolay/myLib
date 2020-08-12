@@ -253,8 +253,8 @@ var my;
                         this.arrow_down = "arrow_downward";
                         this.arrow_left = "arrow_left";
                         this.arrow_right = "arrow_right";
-                        this.arrow_sort_down = "arrow_drop_down";
-                        this.arrow_sort_up = "arrow_drop_up";
+                        this.arrow_sort_down = "arrow_sort_down";
+                        this.arrow_sort_up = "arrow_sort_up";
                         this.arrow_up = "arrow_upward";
                         this.back = "arrow_back";
                         this.check = "check";
@@ -870,6 +870,22 @@ var my;
             var scrollLeft = window.pageXOffset || document.documentElement.scrollLeft;
             var scrollTop = window.pageYOffset || document.documentElement.scrollTop;
             return { top: rect.top + scrollTop, left: rect.left + scrollLeft };
+        }
+        static getWindowSize(height, width) {
+            var windowSize;
+            if (width >= 992) {
+                windowSize = "lg";
+            }
+            else if (width >= 768) {
+                windowSize = "md";
+            }
+            else if (width >= 576) {
+                windowSize = "sm";
+            }
+            else {
+                windowSize = "xs";
+            }
+            return windowSize;
         }
     }
     my.tools = tools;
@@ -1751,6 +1767,19 @@ var my;
                         if (col.Data.value.toString().toLocaleUpperCase().includes(value.toLocaleUpperCase())) {
                             bRet = true;
                         }
+                    });
+                    return bRet;
+                }
+                hasValues(arrFilters) {
+                    var bRet = false;
+                    this.itemsArray.forEach((col, idx) => {
+                        arrFilters.forEach((f, idx) => {
+                            if (col.Name.toUpperCase() == f.column.toUpperCase()) {
+                                if (col.Data.value.toString().toLocaleUpperCase().includes(f.value.toLocaleUpperCase())) {
+                                    bRet = true;
+                                }
+                            }
+                        });
                     });
                     return bRet;
                 }
@@ -6761,6 +6790,7 @@ var my;
                     this.readOnly = false;
                     this.reset = this._reset;
                     this.defaultText = "Please Select";
+                    this._popupMode = false;
                     this.addNone = false;
                     this._keyColumn = "UID";
                     this._labelColumn = "Name";
@@ -6769,13 +6799,29 @@ var my;
                     this.elementErrorPH = document.createElement('div');
                     this.element.appendChild(this.elementErrorPH);
                     this.css = new my.css.DropDown(this.element);
+                    this.divPopucCtlList = document.createElement('div');
+                    this.divTitlePopup = document.createElement('div');
+                    this.elPopupLabel = new my.controls.ctlLabel(this.label, "");
+                    this.divTitlePopup.appendChild(this.elPopupLabel.element);
+                    this.elPopucCloseButton = new my.controls.ctlIcon(this.css.currentTeheme.icons.clear);
+                    this.elPopucCloseButton.visible = true;
+                    this.elPopucCloseButton.element.classList.add("ico-btn");
+                    this.elPopucCloseButton.events.click.subscribe(this, this.onCloseButtonClick.bind(this));
+                    this.divTitlePopup.appendChild(this.elPopucCloseButton.element);
+                    this.divTitlePopup.classList.add("header");
+                    this.divPopucCtlList.appendChild(this.divTitlePopup);
+                    this.divPopucCtlList.classList.add("container");
                     this.value = value;
                     this.ctlList = new my.controls.ctlList(this.keyColumn, this.labelColumn);
                     this.ctlList.css = new my.css.DropDownList(this.ctlList.element);
                     this.ctlList.itemPostProcesing = (li) => { li.css = new my.css.DropDownListItem(li.element); };
                     this.ctlList.events.itemClick.subscribe(this, this.onlistItemClick.bind(this));
-                    this.element.appendChild(this.ctlList.element);
+                    this.divPopucCtlList.hidden = true;
+                    this.divPopucCtlList.appendChild(this.ctlList.element);
+                    this.element.appendChild(this.divPopucCtlList);
                     this.events.valueValidated.subscribe(this, this._onValueValidated.bind(this));
+                    window.addEventListener("resize", this.changeWindowSize.bind(this));
+                    this.changeWindowSize();
                 }
                 get dsData() {
                     return this._dsData;
@@ -6830,6 +6876,9 @@ var my;
                     }
                     return ret;
                 }
+                onCloseButtonClick(e) {
+                    this.hideList(e);
+                }
                 _onValueValidated(s, e, d) {
                     if (this.validation.isValid) {
                         this.elementErrorPH.innerHTML = "";
@@ -6841,6 +6890,19 @@ var my;
                         this.elementErrorPH.appendChild(ico.element);
                         ico.tooltip = this.validation.errorText;
                         this.element.classList.add("error");
+                    }
+                }
+                changeWindowSize() {
+                    var windowSize = my.tools.getWindowSize(window.innerHeight, window.innerWidth);
+                    if (windowSize == "xs") {
+                        this._popupMode = true;
+                    }
+                    else {
+                        this._popupMode = false;
+                    }
+                    if (this.closeEventHandle) {
+                        this.hideList(this);
+                        this.showList();
                     }
                 }
                 rebind() {
@@ -6898,14 +6960,24 @@ var my;
                         return;
                     }
                     this.ctlList.css.add(this.css.currentTeheme.active);
+                    this.elPopupLabel.style.width = this.ctlTrigger.element.clientWidth + "px";
+                    if (this.label != undefined) {
+                        this.elPopupLabel.value = this.label;
+                    }
+                    else {
+                        this.elPopupLabel.value = this.defaultText;
+                    }
+                    this.elPopupLabel.visible = this._popupMode;
+                    this.elPopucCloseButton.visible = this._popupMode;
+                    this.divPopucCtlList.hidden = false;
                     this.alignDropdownListPosition(this.ctlTrigger.element);
                     this.closeEventHandle = this.hideList.bind(this);
                     document.addEventListener('click', this.closeEventHandle, false);
                 }
-                ;
                 hideList(e) {
                     if (!this.ctlTrigger.element.contains(e.target)) {
                         this.ctlList.css.remove(this.css.currentTeheme.active);
+                        this.divPopucCtlList.hidden = true;
                         document.removeEventListener('click', this.closeEventHandle);
                         this.closeEventHandle = undefined;
                     }
@@ -6913,7 +6985,10 @@ var my;
                 ;
                 alignDropdownListPosition(htmlEl) {
                     var topPos = htmlEl.offsetTop + htmlEl.offsetHeight;
-                    if (this.ctlTrigger.ctlType == "ctlText") {
+                    if (this.divPopucCtlList.style.position == "") {
+                        topPos = topPos - this.divPopucCtlList.clientHeight;
+                    }
+                    else if (this.ctlTrigger.ctlType == "ctlText") {
                         topPos = htmlEl.offsetTop + htmlEl.offsetHeight;
                     }
                     var clientFormHeight = htmlEl.ownerDocument.body.clientHeight;
@@ -6921,8 +6996,9 @@ var my;
                     if (trigerElTopPosition + topPos + this.ctlList.element.clientHeight > clientFormHeight) {
                         topPos = -(5 + this.ctlList.element.offsetHeight);
                     }
-                    this.ctlList.style.top = (topPos).toString() + 'px';
-                    this.ctlList.style.left = htmlEl.offsetLeft.toString() + 'px';
+                    this.divPopucCtlList.style.position = "absolute";
+                    this.divPopucCtlList.style.top = (topPos).toString() + 'px';
+                    this.divPopucCtlList.style.left = htmlEl.offsetLeft.toString() + 'px';
                     this.ctlList.style.minWidth = htmlEl.offsetWidth.toString() + 'px';
                 }
                 ;
@@ -7996,6 +8072,7 @@ var my;
                         else if (fItemCfg.type == "autocomplete") {
                             var ac = new my.controls.ctlAutocomplete("");
                             ac.ctlTrigger.css = new my.css.formControl(ac.ctlTrigger.element);
+                            ac.label = fItemCfg.label;
                             ctl = ac;
                         }
                         else {
@@ -8003,6 +8080,7 @@ var my;
                             if (fItemCfg.isMandatory == false) {
                                 dd.addNone = true;
                             }
+                            dd.label = fItemCfg.label;
                             if (fItemCfg.linkedDataColumn) {
                                 var el = this.getFormItem(fItemCfg.linkedDataColumn);
                                 if (el) {
@@ -8585,8 +8663,8 @@ var my;
                         var row = tblData.rows[0];
                         this.pageCount = Math.ceil(this.table.dataTable.length / this.pageSize);
                         this.pageCurrent = 1;
-                        if (row.items.hasOwnProperty("TotalCnt") && Number(row.items["TotalCnt"].value) > 10 && this.sizerPlaceholder.innerHTML === "") {
-                            this._totalItems = Number(row.items["TotalCnt"].value);
+                        this._totalItems = this.table.dataTable.length;
+                        if (this.pageCount > 1) {
                             this._generateDropDownForItems(this._pageSize.toString());
                         }
                     }
@@ -8602,19 +8680,21 @@ var my;
                     var data = this._calculate();
                     this.elementUL = document.createElement("ul");
                     this.elementUL.classList.add("my-pagination-pager");
-                    var liElement;
-                    data.forEach((itm, idx) => {
-                        if (itm.index == -1) {
-                            liElement = this._addPagerItemSpacer();
-                        }
-                        else {
-                            liElement = this._addPagerItem(itm);
-                        }
-                        this.items.push(liElement);
-                        this.elementUL.appendChild(liElement);
-                    });
-                    this.pagerPlaceholder.innerHTML = "";
-                    this.pagerPlaceholder.appendChild(this.elementUL);
+                    if (this.pageCount > 1) {
+                        var liElement;
+                        data.forEach((itm, idx) => {
+                            if (itm.index == -1) {
+                                liElement = this._addPagerItemSpacer();
+                            }
+                            else {
+                                liElement = this._addPagerItem(itm);
+                            }
+                            this.items.push(liElement);
+                            this.elementUL.appendChild(liElement);
+                        });
+                        this.pagerPlaceholder.innerHTML = "";
+                        this.pagerPlaceholder.appendChild(this.elementUL);
+                    }
                 }
                 _addPagerItem(data) {
                     var rLi = document.createElement("li");
@@ -8765,6 +8845,10 @@ var my;
                                 if (this.currentOrderBy.includes("ASC")) {
                                     direction = "DESC";
                                     this.currentOrderByDirection = "DESC";
+                                }
+                                if (this.currentOrderBy.includes("DESC")) {
+                                    direction = "ASC";
+                                    this.currentOrderByDirection = "ASC";
                                 }
                                 if (this.currentOrderBy == cell.tColumn.dataColumn) {
                                     direction = "ASC";
@@ -8957,18 +9041,7 @@ var my;
             }
             calculateTableSize(height, width) {
                 if (this._cfg) {
-                    if (width >= 992) {
-                        this.TableSize = "lg";
-                    }
-                    else if (width >= 768) {
-                        this.TableSize = "md";
-                    }
-                    else if (width >= 576) {
-                        this.TableSize = "sm";
-                    }
-                    else {
-                        this.TableSize = "xs";
-                    }
+                    this.TableSize = my.tools.getWindowSize(height, width);
                 }
             }
             rebind() {

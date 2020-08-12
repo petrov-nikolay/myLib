@@ -87,19 +87,7 @@ namespace my {
 
             calculateTableSize(height: number, width: number) {
                 if (this._cfg) {
-                    if (width >= 992) {
-                        this.TableSize = "lg";
-                    }
-                    else if (width >= 768) {
-                        this.TableSize = "md";
-
-                    }
-                    else if (width >= 576) {
-                        this.TableSize = "sm";
-                    }
-                    else {
-                        this.TableSize = "xs";
-                    }
+                    this.TableSize = tools.getWindowSize(height, width);
                 }
             }
 

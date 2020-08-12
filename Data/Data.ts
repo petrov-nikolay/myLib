@@ -418,6 +418,24 @@ namespace my {
                     return bRet;
                 }
 
+                hasValues(arrFilters: my.data.Filter[]): boolean {
+                    var bRet = false;
+
+                    this.itemsArray.forEach((col: DataColumn, idx) => {
+                        arrFilters.forEach((f: my.data.Filter, idx) => {
+                            if (col.Name.toUpperCase() == f.column.toUpperCase()) {
+                                if (col.Data.value.toString().toLocaleUpperCase().includes(f.value.toLocaleUpperCase())) {
+                                    bRet = true;
+                                }
+                            }
+                        });
+
+                        //console.log(col.Data.value.toString().toLocaleUpperCase() + " == " + value.toLocaleUpperCase());
+                    });
+
+                    return bRet;
+                }
+
 
                 subscribe(subscriber: object, handler: my.core.data.binding.iBindingHandler, defaultData: any = undefined) {
                     if (this._handlerExists(subscriber, handler)) {

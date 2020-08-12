@@ -16,8 +16,8 @@ namespace my {
                     arrow_down: string = "arrow_downward";
                     arrow_left: string = "arrow_left";
                     arrow_right: string = "arrow_right";
-                    arrow_sort_down: string = "arrow_drop_down";
-                    arrow_sort_up: string = "arrow_drop_up";
+                    arrow_sort_down: string = "arrow_sort_down";
+                    arrow_sort_up: string = "arrow_sort_up";
                     arrow_up: string = "arrow_upward";
                     back: string = "arrow_back";
                     check: string = "check";

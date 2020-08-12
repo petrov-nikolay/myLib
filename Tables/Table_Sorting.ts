@@ -36,9 +36,10 @@ namespace my {
                                     direction = "DESC";
                                     this.currentOrderByDirection = "DESC";
                                 }
-                                // if (this.currentOrderBy.includes("DESC")) {
-                                //     direction = "";
-                                // }
+                                if (this.currentOrderBy.includes("DESC")) {
+                                    direction = "ASC";
+                                    this.currentOrderByDirection = "ASC";
+                                }
                                 if (this.currentOrderBy == cell.tColumn.dataColumn) {
                                     direction = "ASC";
                                     this.currentOrderByDirection = "ASC";

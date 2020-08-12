@@ -240,7 +240,7 @@ namespace my {
                             // no binding here - most cases we do not have the data when form is generated anyway
                             //ac.data = this.parentForm.dataSet.getTable(fItemCfg.dataTable);
                             ac.ctlTrigger.css = new my.css.formControl(ac.ctlTrigger.element);
-
+                            ac.label = fItemCfg.label;
                             ctl = ac;
 
                         }
@@ -249,6 +249,8 @@ namespace my {
                             if (fItemCfg.isMandatory == false) {
                                 dd.addNone = true;
                             }
+
+                            dd.label = fItemCfg.label;
 
                             //the is the join of two dropdowns if it works
                             if (fItemCfg.linkedDataColumn) {

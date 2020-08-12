@@ -378,6 +378,7 @@ declare namespace my {
             "top": number;
             "left": number;
         };
+        static getWindowSize(height: number, width: number): "lg" | "md" | "sm" | "xs";
     }
 }
 declare namespace my {
@@ -676,6 +677,7 @@ declare namespace my {
                 setAdded(): void;
                 setModified(): void;
                 hasValue(value: string): boolean;
+                hasValues(arrFilters: my.data.Filter[]): boolean;
                 subscribe(subscriber: object, handler: my.core.data.binding.iBindingHandler, defaultData?: any): void;
                 private _handlerExists;
                 dispatch(sender: object, data: any): void;
@@ -2148,8 +2150,14 @@ declare namespace my {
                 private _dsData;
                 get dsData(): my.data.DataSet;
                 set dsData(val: my.data.DataSet);
+                private _popupMode;
                 addNone: boolean;
+                label: string;
                 elementErrorPH: HTMLElement;
+                private divPopucCtlList;
+                private divTitlePopup;
+                private elPopupLabel;
+                private elPopucCloseButton;
                 get disabled(): boolean;
                 set disabled(val: boolean);
                 private _keyColumn;
@@ -2169,7 +2177,9 @@ declare namespace my {
                 get valueText(): string;
                 autocompleteThreshold: number;
                 constructor(value: string);
+                private onCloseButtonClick;
                 private _onValueValidated;
+                private changeWindowSize;
                 abstract onAfterRebind(): any;
                 rebind(): void;
                 protected onlistItemClick(sender: any, e: any, row: my.data.iDataRow): void;

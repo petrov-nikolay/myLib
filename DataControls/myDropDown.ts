@@ -32,9 +32,17 @@ namespace my {
                     });
                 }
 
+                private _popupMode: boolean = false;
+
                 addNone: boolean = false;
+                label: string;
 
                 elementErrorPH: HTMLElement;
+                private divPopucCtlList: HTMLDivElement;
+                private divTitlePopup: HTMLDivElement;
+                private elPopupLabel: my.controls.ctlLabel;
+                private elPopucCloseButton: my.controls.ctlIcon;
+
 
                 get disabled(): boolean { return this.element.disabled; }
                 set disabled(val: boolean) {
@@ -108,6 +116,24 @@ namespace my {
                     this.element.appendChild(this.elementErrorPH);
 
                     this.css = new my.css.DropDown(this.element);
+
+                    this.divPopucCtlList = document.createElement('div');
+                    this.divTitlePopup = document.createElement('div');
+
+                    this.elPopupLabel = new my.controls.ctlLabel(this.label, "");
+                    this.divTitlePopup.appendChild(this.elPopupLabel.element);
+
+                    this.elPopucCloseButton = new my.controls.ctlIcon(this.css.currentTeheme.icons.clear);
+                    this.elPopucCloseButton.visible = true;
+                    this.elPopucCloseButton.element.classList.add("ico-btn");
+                    this.elPopucCloseButton.events.click.subscribe(this, this.onCloseButtonClick.bind(this));
+
+
+                    this.divTitlePopup.appendChild(this.elPopucCloseButton.element);
+                    this.divTitlePopup.classList.add("header");
+
+                    this.divPopucCtlList.appendChild(this.divTitlePopup);
+                    this.divPopucCtlList.classList.add("container")
                     //var self: ctlDropDown = this;
                     this.value = value;
 
@@ -124,11 +150,23 @@ namespace my {
 
                     // add triger and list in the dropdown container
                     // this.element.appendChild(this.ctlTrigger.element);
-                    this.element.appendChild(this.ctlList.element);
+                    //this.element.appendChild(this.ctlList.element);
+
+                    this.divPopucCtlList.hidden = true;
+                    this.divPopucCtlList.appendChild(this.ctlList.element);
+                    
+
+                    this.element.appendChild(this.divPopucCtlList);
 
                     this.events.valueValidated.subscribe(this, this._onValueValidated.bind(this));
+
+                    window.addEventListener("resize", this.changeWindowSize.bind(this));
+                    this.changeWindowSize();
                 }
 
+                private onCloseButtonClick(e: any) {
+                    this.hideList(e);
+                }
 
                 private _onValueValidated(s, e, d) {
                     if (this.validation.isValid) {
@@ -142,6 +180,22 @@ namespace my {
                         //ico.element.style.top = top + "px";
                         ico.tooltip = this.validation.errorText;
                         this.element.classList.add("error");
+                    }
+                }
+
+                private changeWindowSize() {
+                    var windowSize = tools.getWindowSize(window.innerHeight, window.innerWidth);
+                    if (windowSize == "xs") {
+                        this._popupMode = true;
+                    }
+                    else {
+                        this._popupMode = false;
+                    }
+
+                    //list control is visible
+                    if (this.closeEventHandle) {
+                        this.hideList(this);
+                        this.showList();
                     }
                 }
 
@@ -223,19 +277,30 @@ namespace my {
                     if (this.closeEventHandle) { // prevent another lisener if second click on the button
                         return;
                     }
-
+                    
                     this.ctlList.css.add(this.css.currentTeheme.active); // add class active 
+                    this.elPopupLabel.style.width = this.ctlTrigger.element.clientWidth + "px";
+                    if (this.label != undefined) {
+                        this.elPopupLabel.value = this.label;
+                    }
+                    else {
+                        this.elPopupLabel.value = this.defaultText;
+                    }
+                    this.elPopupLabel.visible = this._popupMode;
+                    this.elPopucCloseButton.visible = this._popupMode;
+                    this.divPopucCtlList.hidden = false;
 
                     this.alignDropdownListPosition(this.ctlTrigger.element);
                     this.closeEventHandle = this.hideList.bind(this);
                     document.addEventListener('click', this.closeEventHandle, false);
-                };
+                }
 
 
                 hideList(e: any) {
                     if (!this.ctlTrigger.element.contains(e.target)) {
 
                         this.ctlList.css.remove(this.css.currentTeheme.active); //remove css class active
+                        this.divPopucCtlList.hidden = true;
 
                         document.removeEventListener('click', this.closeEventHandle);
                         this.closeEventHandle = undefined;
@@ -246,8 +311,10 @@ namespace my {
                 private alignDropdownListPosition(htmlEl: HTMLElement): void {
                     // ADD HERE the rest of the positional calculations 
                     var topPos: number = htmlEl.offsetTop + htmlEl.offsetHeight;
-
-                    if (this.ctlTrigger.ctlType == "ctlText") {
+                    if (this.divPopucCtlList.style.position == "") {
+                        topPos = topPos - this.divPopucCtlList.clientHeight;
+                    }
+                    else if (this.ctlTrigger.ctlType == "ctlText") {
                         topPos = htmlEl.offsetTop + htmlEl.offsetHeight;
                     }
 
@@ -260,9 +327,14 @@ namespace my {
                         topPos = -(5 + this.ctlList.element.offsetHeight);
                     }
 
-                    this.ctlList.style.top = (topPos).toString() + 'px';
-                    this.ctlList.style.left = htmlEl.offsetLeft.toString() + 'px';
+                    this.divPopucCtlList.style.position = "absolute";
+                    this.divPopucCtlList.style.top = (topPos).toString() + 'px';
+                    this.divPopucCtlList.style.left = htmlEl.offsetLeft.toString() + 'px';
                     this.ctlList.style.minWidth = htmlEl.offsetWidth.toString() + 'px';
+
+                    //this.ctlList.style.top = (topPos).toString() + 'px';
+                    //this.ctlList.style.left = htmlEl.offsetLeft.toString() + 'px';
+                    //this.ctlList.style.minWidth = htmlEl.offsetWidth.toString() + 'px';
                 };
 
                 private _reset() {

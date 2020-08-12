@@ -105,9 +105,9 @@ namespace my {
                         //this.pageCount = row.items["pCount"].value;
                         this.pageCount = Math.ceil(this.table.dataTable.length / this.pageSize);
                         this.pageCurrent = 1; //  row.items["pCurrent"].value;
+                        this._totalItems = this.table.dataTable.length;
 
-                        if (row.items.hasOwnProperty("TotalCnt") && Number(row.items["TotalCnt"].value) > 10 && this.sizerPlaceholder.innerHTML === "") {
-                            this._totalItems = Number(row.items["TotalCnt"].value);
+                        if (this.pageCount > 1) {
                             this._generateDropDownForItems(this._pageSize.toString());
                         }
                     } else {
@@ -128,21 +128,22 @@ namespace my {
                     this.elementUL = document.createElement("ul");
                     this.elementUL.classList.add("my-pagination-pager");
 
-                    var liElement: HTMLLIElement;
-                    data.forEach((itm: my.core.table.PaginationItem, idx) => {
-                        if (itm.index == -1) {
-                            liElement = this._addPagerItemSpacer();
+                    if (this.pageCount > 1) {
+                        var liElement: HTMLLIElement;
+                        data.forEach((itm: my.core.table.PaginationItem, idx) => {
+                            if (itm.index == -1) {
+                                liElement = this._addPagerItemSpacer();
 
-                        } else {
-                            liElement = this._addPagerItem(itm)
+                            } else {
+                                liElement = this._addPagerItem(itm)
 
-                        }
-                        this.items.push(liElement);
-                        this.elementUL.appendChild(liElement);
-                    });
-                    this.pagerPlaceholder.innerHTML = "";
-                    this.pagerPlaceholder.appendChild(this.elementUL);
-
+                            }
+                            this.items.push(liElement);
+                            this.elementUL.appendChild(liElement);
+                        });
+                        this.pagerPlaceholder.innerHTML = "";
+                        this.pagerPlaceholder.appendChild(this.elementUL);
+                    }
 
                 }
 

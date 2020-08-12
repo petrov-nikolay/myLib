@@ -722,13 +722,23 @@ input[type=number] {
   top: 7px;
 }
 
+.my-dd .header {
+  border: 1px solid #bdbdbd;
+  border-radius: .25rem;
+}
+
+.my-dd .container {
+  z-index: 1000;
+  background-color: #fff;
+  padding: .2rem 0 .2rem 0;
+  margin: 0.2rem 0 0 0;
+}
+
 .my-dd ul {
   display: none;
   z-index: 1000;
   border: 1px solid #bdbdbd;
   border-radius: .25rem;
-  margin: 0.2rem 0 0 0;
-  padding: .2rem 0 .2rem 0;
   background-color: #fff;
 }
 
@@ -778,8 +788,8 @@ input[type=number] {
   min-height: 3.5rem;
   display: -ms-inline-grid;
   display: inline-grid;
-  -ms-grid-columns: 40px 350px auto 50px 240px;
-      grid-template-columns: 40px 350px auto 50px 240px;
+  -ms-grid-columns: 40px 20rem auto 50px 20rem;
+      grid-template-columns: 40px 20rem auto 50px 20rem;
 }
 
 .topMenu .AlignRight {
