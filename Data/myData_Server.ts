@@ -48,9 +48,9 @@ namespace my {
              * @memberof svrDataSet
              */
             getData(params: Array<object> = undefined, onCustomSuccess: (sender: any, responce: my.dts.connResponce) => any = undefined) {
-                if (params == undefined) {
-                    params = this._getDefaultParams();
-                }
+                // if (params == undefined) {
+                //     params = this._getDefaultParams();
+                // }
 
                 if (onCustomSuccess) {
                     this.dts.get(onCustomSuccess, this._onErrorGet.bind(this), params);

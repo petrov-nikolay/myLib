@@ -6154,9 +6154,6 @@ var my;
                 }
             }
             getData(params = undefined, onCustomSuccess = undefined) {
-                if (params == undefined) {
-                    params = this._getDefaultParams();
-                }
                 if (onCustomSuccess) {
                     this.dts.get(onCustomSuccess, this._onErrorGet.bind(this), params);
                 }
