@@ -1,0 +1,64 @@
+﻿@import "_Variables.scss";
+
+$zindex: 200;
+
+.modal.open {
+    display: block;
+    background-color: #fff;
+
+    max-width: 500px;
+    margin: 30px auto;
+    position: fixed;
+    left: 0;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    height: auto;
+    /* override bottom property of bootstrap, because bottom: 0 causes 100% height even 
+        though the modal itself is not 100% height
+    */
+    bottom: auto;
+    z-index: $zindex+1;
+    @include shadow_card();
+    //box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+}
+
+.modal.mask {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: $zindex;
+    background-color: rgba(0, 0, 0, 0.25);
+}
+
+.modal .modal_header {
+    padding: 15px;
+    border-bottom: 1px solid $color_border;
+    background-color: $color_background_title;
+}
+
+.modal .modal_header h4 {
+    margin: 0;
+}
+
+.modal .modal_body {
+    padding: 20px;
+    font-size: 1rem;
+}
+
+.modal .modal_footer {
+    text-align: right;
+    border-top: 1px solid $color_border;
+    padding: 15px;
+}
+
+.modal .modal_footer .btn:first-child {
+    margin-right: 10px;
+}
+
+
+//.modal.confirm {
+//height: 10rem;
+//}

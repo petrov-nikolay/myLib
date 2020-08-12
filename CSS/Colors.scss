@@ -1,0 +1,20 @@
+@import "Sass/_Colors.scss";
+
+@each $color-name, $color-variants in $material-colors {
+
+    .color-#{$color-name} {
+        color: get-color($color-name, '500');
+    }
+    .color-bgr-#{$color-name} {
+        background-color: get-color($color-name, '500');
+    }
+
+    .color-#{$color-name}-dark {
+        color: get-color($color-name, '800');
+    }
+
+    .color-bgr-#{$color-name}-dark {
+        background-color: get-color($color-name, '800');
+    }
+     
+}

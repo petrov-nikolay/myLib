@@ -1,0 +1,81 @@
+﻿@import "_Colors.scss";
+
+
+
+
+// COLORS
+
+
+$color_primary: get-color('blue', '600');
+$color_primary_hover: get-color('blue', '500');
+
+$color_secondary: get-color('blue-grey', '500');
+$color_secondary_hover: get-color('blue-grey', '400');
+
+$color_success: get-color('green', '600');
+$color_success_hover: get-color('green', '500');
+
+$color_danger: get-color('red', '600');
+$color_danger_hover: get-color('red', '500');
+$color_danger_light: get-color('red', '300');
+
+$color_warning: get-color('orange', '600');
+$color_warning_hover: get-color('orange', '500');
+$color_warning_light: get-color('orange', '300');
+
+$color_info: get-color('light-blue', '600');
+$color_info_hover: get-color('light-blue', '500');
+$color_info_light: get-color('light-blue', '300');
+
+$color_border: get-color('grey', '400');
+$color_background_master: get-color('grey', '200');
+$color_background_page: #fff;
+
+$color_text: rgba(0, 0, 0, 0.85);
+
+$color_background_title: #dddddd;
+
+
+
+
+
+
+$border-radius: 0.15rem;
+$border-color : #dadce0;
+
+
+
+
+// SHADOWS
+
+@mixin shadow_card() {
+    -webkit-box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
+    box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
+}
+
+@mixin shadow_card2() {
+    -webkit-box-shadow: 0 4px 10px 0 rgba(0, 0, 0, 0.16), 0 4px 20px 0 rgba(0, 0, 0, 0.12);
+    box-shadow: 0 4px 10px 0 rgba(0, 0, 0, 0.16), 0 4x 20px 0 rgba(0, 0, 0, 0.12);
+}
+
+
+@mixin shadow_tabs() {
+    -webkit-box-shadow: 0 2px 5px 2px rgba(0, 0, 0, 0.16);
+    box-shadow: 0 2px 5px 2px rgba(0, 0, 0, 0.16);
+    -moz-box-shadow: 0 2px 5px 2px rgba(0, 0, 0, 0.16);
+}
+
+
+@mixin shadow_calendarDD() {
+    -webkit-box-shadow: 2px 2px 5px 0 rgba(0, 0, 0, 0.12);
+    box-shadow: 2px 2px 5px 0 rgba(0, 0, 0, 0.12);
+}
+
+
+
+
+.shadow {
+
+
+    @include shadow_card();
+}

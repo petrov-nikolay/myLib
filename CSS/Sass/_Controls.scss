@@ -1,0 +1,182 @@
+﻿@import "_Variables.scss";
+
+$control_height: 2.5rem; //calc(1.5em + 0.75rem + 3px);
+
+
+.hidden {
+    visibility: hidden;
+}
+
+
+.ico-btn {
+    line-height: 1;
+    cursor: pointer;
+}
+
+
+
+.my-input {
+    position: relative;
+
+    i {
+        position: absolute;
+        font-size: 1.5rem;
+        right: .4rem;
+        top: .5rem;
+    }
+}
+
+.my-input.error {
+
+    input {
+        border-color: $color_danger;
+    }
+
+    i {
+        color: $color_danger;
+    }
+}
+
+
+input {
+    display: block;
+    width: 100%;
+    //height: calc(1.5em + 0.75rem + 2px);
+    height: $control_height;
+    padding: 0.375rem 0.75rem;
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.5;
+    color: #495057;
+    background-color: #fff;
+    background-clip: padding-box;
+    border: 1px solid #ced4da;
+    border-radius: 0.15rem;
+    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+input:focus {
+    outline: none;
+    border: 1px solid #3282d1;
+    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+
+input[type='checkbox'] {
+    display: block;
+    margin: 0;
+    -webkit-appearance: none;
+    appearance: none;
+    border: none;
+    background-color: $color_background_master;
+    width: 3rem;
+    height: 1.5rem;
+    border-radius: 4px;
+    box-shadow: inset 0 1px 4px rgba(0, 0, 0, .2);
+    cursor: pointer;
+    position: relative;
+    transition: background-color .5s;
+}
+
+
+
+input[type='checkbox']:after {
+    content: "";
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 45%;
+    height: 80%;
+    background-color: #fdfdfd;
+    margin: 4%;
+    border-radius: 4px;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, .2);
+    background: rgb(255, 255, 255);
+    transition: .4s all;
+}
+
+input[type='checkbox']:checked {
+    background-color: $color_success;
+    background: $color_success;
+}
+
+input[type='checkbox']:checked:after {
+    left: 45%;
+}
+
+input[type=number] {
+    -moz-appearance: textfield;
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+
+
+
+/* TOOLTIP */
+
+.ctlTooltip {
+    position: absolute;
+    border: 1px solid black;
+    visibility: hidden;
+    top: 0;
+    left: 0;
+    background-color: white;
+    border-radius: 3px;
+    text-align: center;
+    opacity: 0;
+    z-index: 50;
+}
+
+.tooltipOpen {
+    visibility: visible;
+    opacity: 1;
+}
+
+/* TOOLTIP END */
+
+
+
+/* TOAST MESSAGE */
+
+.toast-group {
+    position: fixed;
+    bottom: 0;
+    right: 10px;
+    z-index: 151;
+    min-width: 250px;
+    min-height: 50px;
+}
+
+.toast-group-item {
+    color: white;
+    background-color: $color_primary;
+    padding: 5px 10px 5px 10px;
+    margin: 5px;
+
+    :hover {
+        background-color: $color_primary_hover;
+    }
+}
+
+.toast-group-item.success {
+    color: white;
+    background-color: $color_success;
+
+    :hover {
+        background-color: $color_success_hover;
+    }
+}
+
+.toast-group-item.error {
+    color: white;
+    background-color: $color_danger;
+
+    :hover {
+        background-color: $color_danger_hover;
+    }
+}
+
+
+/* END TOAST MESSAGE */

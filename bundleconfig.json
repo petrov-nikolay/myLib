@@ -1,0 +1,13 @@
+[
+  {
+    "outputFileName": "myLib.min.js",
+    "inputFiles": [
+      "myLib.js"
+    ],
+    "minify": {
+      "enabled": true,
+      "renameLocals": true
+    },
+    "sourceMap": true
+  }
+]

@@ -1,0 +1,32 @@
+[
+  {
+    "outputFile": "myLib.css",
+    "inputFile": "myLib.scss",
+    "sourceMap": false
+  },
+  {
+    "outputFile": "myLib.es5.js",
+    "inputFile": "myLib.js",
+    "sourceMap": false
+  },
+  {
+    "outputFile": "Sass/Colors.css",
+    "inputFile": "Sass/Colors.scss",
+    "sourceMap": false
+  },
+  {
+    "outputFile": "Colors.css",
+    "inputFile": "Colors.scss",
+    "sourceMap": false
+  },
+  {
+    "outputFile": "CSS/myLib.css",
+    "inputFile": "CSS/myLib.scss",
+    "sourceMap": false
+  },
+  {
+    "outputFile": "CSS/Colors.css",
+    "inputFile": "CSS/Colors.scss",
+    "sourceMap": false
+  }
+]

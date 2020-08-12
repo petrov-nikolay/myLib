@@ -1,0 +1,141 @@
+@font-face {
+  font-family: 'Material Icons';
+  font-style: normal;
+  font-weight: 400;
+  /*src: url(MaterialIcons-Regular.eot);*/
+  /* For IE6-8 */
+  src: local("Material Icons"), local("MaterialIcons-Regular"), url("./fonts/material-icons/MaterialIcons-Regular.woff2") format("woff2"), url("/css/fonts/material-icons/MaterialIcons-Regular.woff) format('woff'), url(..//css/fonts/material-icons/MaterialIcons-Regular.ttf") format("truetype");
+}
+
+.my-icons {
+  font-family: 'Material Icons';
+  font-weight: normal;
+  font-style: normal;
+  font-size: 24px;
+  /* Preferred icon size */
+  display: inline-block;
+  line-height: 1;
+  text-transform: none;
+  letter-spacing: normal;
+  word-wrap: normal;
+  white-space: nowrap;
+  direction: ltr;
+  /* Support for all WebKit browsers. */
+  -webkit-font-smoothing: antialiased;
+  /* Support for Safari and Chrome. */
+  text-rendering: optimizeLegibility;
+  /* Support for Firefox. */
+  -moz-osx-font-smoothing: grayscale;
+  /* Support for IE. */
+  -webkit-font-feature-settings: 'liga';
+          font-feature-settings: 'liga';
+}
+
+.my-icons.add:before {
+  content: "\E145";
+}
+
+.my-icons.add_circle_outline:before {
+  content: "\ea10";
+}
+
+.my-icons.arrow_down:before {
+  content: "\ea4d";
+}
+
+.my-icons.arrow_left:before {
+  content: "\E5CB";
+}
+
+.my-icons.arrow_right:before {
+  content: "\E5CC";
+}
+
+.my-icons.arrow_sort_down:before {
+  content: "\E5C5";
+}
+
+.my-icons.arrow_sort_up:before {
+  content: "\E5C7";
+}
+
+.my-icons.arrow_up:before {
+  content: "\0000";
+}
+
+.my-icons.back:before {
+  content: "\0000";
+}
+
+.my-icons.check:before {
+  content: "\0000";
+}
+
+.my-icons.clear:before {
+  content: "\E14C";
+}
+
+.my-icons.close:before {
+  content: "\E14C";
+}
+
+.my-icons.create:before {
+  content: "\E145";
+}
+
+.my-icons.delete:before {
+  content: "\E92B";
+}
+
+.my-icons.done:before {
+  content: "\0000";
+}
+
+.my-icons.edit:before {
+  content: "\0000";
+}
+
+.my-icons.error:before {
+  content: "\E001";
+}
+
+.my-icons.filter:before {
+  content: "\E152";
+}
+
+.my-icons.menu:before {
+  content: "\E5D2";
+}
+
+.my-icons.new:before {
+  content: "\E89C";
+}
+
+.my-icons.next:before {
+  content: "\E5CC";
+}
+
+.my-icons.previous:before {
+  content: "\E5CB";
+}
+
+.my-icons.print:before {
+  content: "\0000";
+}
+
+.my-icons.remove:before {
+  content: "\0000";
+}
+
+.my-icons.save:before {
+  content: "\0000";
+}
+
+.my-icons.search:before {
+  content: "\E8B6";
+}
+
+.my-icons.sync:before {
+  content: "\E627";
+}
+/*# sourceMappingURL=Icons.css.map */

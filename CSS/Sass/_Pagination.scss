@@ -1,0 +1,52 @@
+﻿@import "_Variables.scss";
+
+
+
+
+.my-pagination {
+    text-align: center;
+    display: flex;
+    -ms-flex-wrap: wrap;
+    flex-wrap: wrap;
+
+
+    li {
+        float: left;
+        padding: 5px 12px;
+        text-decoration: none;
+        cursor: pointer;
+    }
+
+    li.active {
+        background-color: $color_primary;
+    }
+
+    li:hover {
+        background-color: $color_primary_hover;
+    }
+
+    .pspacer:hover {
+        background-color: transparent;
+        cursor: auto;
+    }
+
+    .my-dd {
+        margin: 0;
+        margin-top: 1rem;
+
+
+        input {
+            max-width: 3rem;
+            min-width: 3rem;
+        }
+    }
+
+}
+
+
+.my-pagination-pager {
+    display: inline-block;
+    list-style-type: none;
+    padding: 1rem;
+    margin: 0;
+}

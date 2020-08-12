@@ -1,0 +1,103 @@
+﻿@import "_Variables.scss";
+
+// REMOVE LINE FOR RELEACE
+
+
+.my-frm-itm {
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
+
+    .error input {
+        border: 1px solid $color_danger;
+        transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+    }
+
+    .error i {
+        position: absolute;
+        right: 0.5rem;
+        //top: 0;
+        color: $color_danger;
+
+        .tooltiptext {
+            top: -2.5rem;
+            right: 100%;
+        }
+    }
+
+    label {
+        padding-right: 1rem;
+        display: inline-block;
+        margin-bottom: .3rem;
+
+    }
+
+    .ronly {
+        display: block;
+        width: 100%;
+        font-weight: bold;
+        overflow: hidden;
+    }
+
+    input {
+        min-width: 15rem;
+    }
+
+    input[type="checkbox"] {
+        margin-top: .5rem;
+        min-width: unset;
+    }
+
+    textarea {
+        width: 100%;
+        min-height: 50px;
+        min-width: 15rem;
+        border: 1px solid $border-color;
+        outline: none;
+    }
+
+    textarea:focus {
+        border-bottom: 1px solid $color_primary;
+    }
+
+    span {
+        min-width: 15rem;
+    }
+
+}
+
+// end .my-frm-itm {
+
+
+@mixin lblLeft() {
+    //display: table;
+
+    label {
+        //display: table-cell;
+        display: inline-block;
+        text-align: right;
+        width: 30%;
+        margin-bottom: 0;
+        vertical-align: middle;
+    }
+
+    .fCtl {
+        //display: table-cell;
+        display: inline-block;
+        width: 70%;
+        vertical-align: middle;
+    }
+}
+
+.my-form {
+
+    @media only screen and (min-width: 1400px) {
+        .my-frm-itm {
+            @include lblLeft();
+        }
+    }
+
+    .my-frm-itm.lblLeft {
+        @include lblLeft();
+    }
+
+}

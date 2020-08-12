@@ -1,0 +1,108 @@
+﻿@import "_Variables.scss";
+
+
+
+$li_bgr_color: $color_background_master;
+$li_color: $color_text;
+$li_border_color: $color_border;
+$li_selected_color: $color_primary;
+
+.my-tabs {
+    //border-bottom: 1px solid $color_border;
+    width: 100%;
+    background-color: $color_background_master;
+}
+
+.my-tabs #shadow {
+    @include shadow_tabs;
+    width: 100%;
+    z-index: -1;
+}
+
+.my-tabs {
+    display: flex;
+    flex-wrap: wrap;
+    padding-left: 0;
+    margin: 0;
+    margin-bottom: 1.5rem;
+    list-style: none;
+}
+
+.my-tabs li {
+    border-top-left-radius: .25rem;
+    border-top-right-radius: .25rem;
+    display: block;
+    margin-bottom: -1px;
+}
+
+.my-tabs li a,
+.my-tabs li span {
+    text-decoration: none;
+    color: $li_color;
+    padding: .5rem 1rem;
+    display: block;
+    font-weight: 500;
+}
+
+.my-tabs li.selected {
+
+    border-bottom: 2px solid $li_selected_color;
+}
+
+.my-tabs li.selected a {
+
+    color: $li_selected_color;
+}
+
+.my-tabs li:hover {
+    border-bottom: 2px solid $li_selected_color;
+}
+
+
+
+
+
+
+//CLASIC TABS
+.my-tabs.clasic {
+    border-bottom: 1px solid $color_border;
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    padding-left: 0;
+    margin-bottom: 1rem;
+    list-style: none;
+}
+
+.my-tabs.clasic a {
+    text-decoration: none;
+    color: $li_color;
+    padding: .5rem 1rem;
+    display: block;
+}
+
+.my-tabs.clasic li {
+    margin-bottom: -1px;
+    border-top: 1px solid transparent;
+    border-left: 1px solid transparent;
+    border-right: 1px solid transparent;
+    border-bottom: 1px solid $li_border_color;
+    border-top-left-radius: .25rem;
+    border-top-right-radius: .25rem;
+    display: block;
+}
+
+.my-tabs.clasic li.selected {
+    background-color: $li_bgr_color;
+    border-top: 1px solid $li_border_color;
+    border-left: 1px solid $li_border_color;
+    border-right: 1px solid $li_border_color;
+    border-bottom: 1px solid transparent;
+    font-weight: 500;
+}
+
+.my-tabs.clasic li:hover {
+    border-top: 1px solid $li_border_color;
+    border-left: 1px solid $li_border_color;
+    border-right: 1px solid $li_border_color;
+}

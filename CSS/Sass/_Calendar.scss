@@ -1,0 +1,159 @@
+@import "Variables";
+
+$color_border : #dadce0;
+
+.my-calendar {
+    position: relative;
+
+    .row {
+        width: 100%;
+        display: flex;
+        align-items: stretch;
+
+    }
+
+    .body {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+        grid-template-rows: auto;
+        // need this to fill left border for children
+        border-left: 1px solid $color_border;
+    }
+
+    .title .monthSelector {
+        margin-bottom: 1rem;
+        font-size: x-large;
+        display: inline-block;
+    }
+
+    .title .monthSelector i {
+        vertical-align: middle;
+        margin-right: .4rem;
+        user-select: none;
+    }
+
+    .colTitle {
+        text-align: center;
+        //flex: 1 0 50px;
+        border-bottom: 1px solid $color_border;
+        border-right: 1px solid $color_border;
+        border-top: 1px solid $color_border;
+        padding: 0.1rem 0.5rem;
+        font-weight: bold;
+    }
+
+
+
+
+    //END CALENDAR
+}
+
+
+
+.my-calendar-day {
+    //flex: 1 0 50px;
+    border-bottom: 1px solid $color_border;
+    border-right: 1px solid $color_border;
+    min-height: 7rem;
+
+
+
+
+    .inactive {
+        background-color: #f8f8f8;
+    }
+
+    .inactive .title {
+        color: #8d8d8d;
+    }
+
+    .selected {
+        background-color: $color_border;
+    }
+
+    .title {
+        padding: 0.5rem;
+        text-align: center;
+    }
+
+    .today .title {
+        background-color: $color_primary;
+
+        height: 25px;
+        width: 25px;
+        line-height: 25px;
+        border-radius: 50%;
+        text-align: center;
+        display: inline-block;
+        padding: 0;
+    }
+
+
+}
+
+//END CALENDAR DAY
+
+
+.my-calendar-dd {
+
+    input[type=button] {
+        width: 100%;
+    }
+
+    .my-calendar {
+        max-width: 350px;
+        display: none;
+        z-index: 1000;
+        background-color: #fff;
+        border: 1px solid $color_border;
+        border-radius: $border-radius;
+
+        @include shadow_calendarDD();
+
+        .title {
+            padding: .5rem;
+
+            .btn {
+                min-width: 1rem;
+                font-size: small;
+                height: 1.5rem;
+                line-height: 1rem;
+                padding: .1rem .3rem;
+            }
+
+            .monthSelector {
+                font-size: small;
+                margin: 0;
+            }
+        }
+
+
+        .colTitle {
+            font-size: small;
+            border: none;
+            border-bottom: 1px solid $color_border;
+        }
+
+
+    }
+
+    .my-calendar.active {
+        position: absolute;
+        display: block;
+    }
+
+    .my-calendar-day {
+        min-height: 1rem;
+        text-align: center;
+        border: none;
+    }
+
+    .my-calendar-day:hover {
+        background-color: $color_primary_hover;
+        cursor: pointer;
+    }
+
+
+}
+
+//END .my-calendar-dd

@@ -1,0 +1,73 @@
+﻿@import "_Variables.scss";
+
+
+
+$color_li_hover: $color_primary_hover;
+
+
+.my-dd {
+    position: relative;
+
+
+
+    input {
+        text-align: left;
+        width: 100%;
+    }
+
+    i {
+        position: absolute;
+        display: block;
+        bottom: 7px;
+        right: 7px;
+        top: 7px;
+    }
+
+    ul {
+        display: none;
+        z-index: 1000;
+        border: 1px solid $color_border;
+        border-radius: .25rem;
+        margin: 0.2rem 0 0 0;
+        padding: .2rem 0 .2rem 0;
+        background-color: #fff;
+    }
+
+    ul.active {
+        position: absolute;
+        display: block;
+        max-height: 17rem;
+        //max-width: 5rem;
+        overflow-x: hidden;
+        overflow-y: auto;
+    }
+
+    li {
+        line-height: 1.5rem;
+        height: calc(1.5em + 0.75rem + 2px);
+        padding: 0.375rem 0.75rem;
+        text-align: left;
+        border-bottom: 1px solid $color_border;
+        color: $color_text;
+    }
+
+    li:last-child {
+        border-bottom: none;
+    }
+
+    li:hover {
+        background-color: $color_li_hover;
+    }
+}
+
+.my-dd.error {
+
+    input {
+        border-color: $color_danger;
+        border-width: 1px;
+    }
+
+    i {
+        color: $color_danger;
+    }
+}

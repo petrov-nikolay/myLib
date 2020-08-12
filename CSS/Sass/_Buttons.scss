@@ -1,0 +1,261 @@
+﻿@import "Variables";
+
+
+$color_btn_primary: $color_primary;
+$color_btn_secondary: $color_secondary;
+$color_btn_success: $color_success;
+$color_btn_danger: $color_danger;
+$color_btn_warning: $color_warning;
+$color_btn_info: $color_info;
+
+$color_btn_primary_hover: $color_primary_hover;
+$color_btn_secondary_hover: $color_secondary_hover;
+$color_btn_success_hover: $color_success_hover;
+$color_btn_danger_hover: $color_danger_hover;
+$color_btn_warning_hover: $color_warning_hover;
+$color_btn_info_hover: $color_info_hover;
+
+
+$color_btn_text_primary: #fff;
+$color_btn_text_secondary: #fff;
+$color_btn_text_success: #fff;
+$color_btn_text_danger: #fff;
+$color_btn_text_warning: #fff;
+$color_btn_text_info: #fff;
+
+
+.btn {
+    //background-color: $color_btn_primary;
+    //color: $color_btn_text_primary;
+    display: inline-block;
+
+    text-align: center;
+    vertical-align: middle;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    border: none;
+    padding: 0.375rem 0.75rem;
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.5;
+    border-radius: 0.15rem;
+
+    width: auto;
+    min-width: 6rem;
+}
+
+.btn input {
+    transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+// @media (prefers-reduced-motion: reduce) {
+//     .btn {
+//         transition: none;
+//     }
+// }
+
+
+// .btn.focus {
+//     outline: none;
+//     border: 1px solid #3282d1;
+//     transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+// }
+
+
+.btn:disabled {
+    opacity: 0.65;
+}
+
+// a.btn.disabled,
+// fieldset:disabled a.btn {
+//     pointer-events: none;
+// }
+
+.btn:hover {
+    //background-color: $color_btn_primary_hover;
+    //color: $color_btn_text_primary;
+    //border: 1px solid transparent;
+    text-decoration: none;
+}
+
+.btn-primary {
+    background-color: $color_btn_primary;
+    color: $color_btn_text_primary;
+}
+
+.btn-primary:hover {
+    background-color: $color_btn_primary_hover;
+    color: $color_btn_text_primary;
+}
+
+.btn-secondary {
+    background-color: $color_btn_secondary;
+    color: $color_btn_text_secondary;
+}
+
+.btn-secondary:hover {
+    background-color: $color_btn_secondary_hover;
+    color: $color_btn_text_secondary;
+}
+
+.btn-success {
+    background-color: $color_btn_success !important;
+    color: $color_btn_text_success !important;
+}
+
+.btn-success:hover {
+    background-color: $color_btn_success_hover !important;
+    color: $color_btn_text_success !important;
+}
+
+.btn-info {
+    background-color: $color_btn_info !important;
+    color: $color_btn_text_info !important;
+}
+
+.btn-info:hover {
+    background-color: $color_btn_info_hover !important;
+    color: $color_btn_text_info !important;
+}
+
+.btn-warning {
+    background-color: $color_btn_warning !important;
+    color: $color_btn_text_warning !important;
+}
+
+.btn-warning:hover {
+    background-color: $color_btn_warning_hover !important;
+    color: $color_btn_text_warning !important;
+}
+
+.btn-danger {
+    background-color: $color_btn_danger !important;
+    color: $color_btn_text_danger !important;
+}
+
+.btn-danger:hover {
+    background-color: $color_btn_danger_hover !important;
+    color: $color_btn_text_danger !important;
+}
+
+
+// .btn-circle {
+//     position: absolute;
+//     right: 20px;
+//     top: 25px;
+//     padding: 6px 0px;
+//     border-radius: 15px;
+//     text-align: center;
+//     cursor: pointer;
+//     font-size: 2.5rem;
+// }
+
+
+
+//this is just container for the I element
+
+.table .btn-round {
+    background-color: transparent;
+}
+
+
+.btn-ico {
+    cursor: pointer;
+    border: none;
+    padding: 0;
+    margin: 0;
+    outline: none;
+    background-color: transparent;
+}
+
+
+.btn-round {
+    display: inline-block;
+    border-radius: 50%;
+    cursor: pointer;
+    padding: 0;
+    border: none;
+
+    outline: none;
+}
+
+.btn-round i {
+    //padding: .5rem;
+    margin: .5rem;
+    overflow: hidden;
+    vertical-align: middle;
+    text-align: center;
+
+}
+
+
+
+
+
+.btn-fixed {
+
+    z-index: 1000;
+
+    .btn-round {
+        background-color: $color_btn_primary;
+        color: $color_btn_text_primary;
+        @include shadow_card();
+    }
+
+    .btn-round:hover {
+
+        @include shadow_card2();
+    }
+
+
+    // active = mose click donw
+    .btn-round:active {
+        box-shadow: none;
+    }
+}
+
+.btnFixedItems {
+    opacity: 0;
+    z-index: -1;
+    -webkit-transition: all .5s;
+    /* For Safari 3.1 to 6.0 */
+    transition: all .5s;
+    bottom: 1rem;
+    position: absolute;
+}
+
+.btnFixedItems.open {
+
+    z-index: 100;
+    opacity: 100;
+    bottom: 4rem;
+    text-align: right;
+    color: black;
+}
+
+.btnFixedItems>button {
+    padding: .3rem;
+    float: right; //in combination with btnFixedItems width: 1px;
+    margin: .2rem;
+}
+
+.btnFixedItems span {
+    line-height: 3rem;
+    text-align: right;
+}
+
+
+.btnFixedBottomRight {
+    position: fixed;
+    right: 5rem;
+    bottom: 5rem;
+}
+
+.btnFixedBottomRight .trigger i {
+    font-size: 2rem;
+    line-height: 2.5rem; // big font changes width but the height is not enough for proper circle
+    min-width: 2.5rem; //make sure icon is scuare if icon is very tin;
+
+}
