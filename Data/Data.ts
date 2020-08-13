@@ -281,15 +281,15 @@ namespace my {
                 }
 
 
-                filteBy(filterValue: string) {
+                filterBy(filterValue: string): number {
                     var f: my.data.Filter;
-                    if (filterValue) {
+                    if ((filterValue != undefined) || (filterValue != "")) {
                         f = new my.data.Filter("ALL_COLUMNS", filterValue);
                         this.filters.add(f);
                     } else {
                         this.filters.remove("ALL_COLUMNS")
                     }
-                    this.filterRows();
+                    return this.filterRows();
                 }
 
                 //filter and page reset

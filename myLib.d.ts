@@ -655,7 +655,7 @@ declare namespace my {
                 abstract parse(arr: Array<Object>): any;
                 currentOrderBy: string;
                 orderBy(orderBy: string, type?: "ASC" | "DESC", notify?: boolean): void;
-                filteBy(filterValue: string): void;
+                filterBy(filterValue: string): number;
                 filterRows(): number;
             }
             class DataColumn {

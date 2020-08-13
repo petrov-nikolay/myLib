@@ -1674,16 +1674,16 @@ var my;
                         this.dispatch(this, undefined);
                     }
                 }
-                filteBy(filterValue) {
+                filterBy(filterValue) {
                     var f;
-                    if (filterValue) {
+                    if ((filterValue != undefined) || (filterValue != "")) {
                         f = new my.data.Filter("ALL_COLUMNS", filterValue);
                         this.filters.add(f);
                     }
                     else {
                         this.filters.remove("ALL_COLUMNS");
                     }
-                    this.filterRows();
+                    return this.filterRows();
                 }
                 filterRows() {
                     var currentPage = 1;
@@ -9428,9 +9428,7 @@ var my;
                 i.events.click.subscribe(this, this.deleteRow.bind(this), row);
             }
             _onFilterChange(s, e, d) {
-                var f = new my.data.Filter(undefined, this.filtering.currentSearchBy);
-                this.dataTable.filters.add(f);
-                var bindVisible = this.dataTable.filterRows();
+                var bindVisible = this.dataTable.filterBy(this.filtering.currentSearchBy);
                 this.pagination.pageCount = Math.ceil(bindVisible / this.pagination.pageSize);
             }
             _onPaginationPageSizeChange(s, e, d) {
