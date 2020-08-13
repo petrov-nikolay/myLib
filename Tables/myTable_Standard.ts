@@ -209,12 +209,14 @@ namespace my {
 
 
             private _onFilterChange(s, e, d) {
-                var bindVisible = this.dataTable.filterBy(this.filtering.currentSearchBy);
+                var f = new my.data.Filter(undefined, this.filtering.currentSearchBy);
+                this.dataTable.filters.add(f);
+                var bindVisible = this.dataTable.filterRows();
                 this.pagination.pageCount = Math.ceil(bindVisible / this.pagination.pageSize);
             }
 
             private _onPaginationPageSizeChange(s, e, d) {
-                this.dataTable.filterBy(this.filtering.currentSearchBy);
+                this._onFilterChange(s, e, d);
             }
             private _onPaginationPageChange(s, e, d) {
                 this.currentPage = this.pagination.pageCurrent;

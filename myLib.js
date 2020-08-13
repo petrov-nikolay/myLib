@@ -1542,10 +1542,16 @@ var my;
 var my;
 (function (my) {
     "use strict";
+    let data;
+    (function (data_2) {
+        class iFilter {
+        }
+        data_2.iFilter = iFilter;
+    })(data = my.data || (my.data = {}));
     let core;
     (function (core) {
         let data;
-        (function (data_2) {
+        (function (data_3) {
             class DataSet {
                 constructor(tableNames) {
                     this.tableNames = [];
@@ -1604,7 +1610,7 @@ var my;
                     this.events.Modified.dispatch(this, d);
                 }
             }
-            data_2.DataSet = DataSet;
+            data_3.DataSet = DataSet;
             ;
             class DataTable extends my.core.data.binding.Observable {
                 constructor(val, name = undefined) {
@@ -1618,7 +1624,7 @@ var my;
                     this.tableName = name;
                     this.pageCurrent = 1;
                     this.pageSize = 10;
-                    this.filters = new my.core.data.filter(this);
+                    this.filters = new my.core.data.filterManager(this);
                 }
                 get value() {
                     return this.rows;
@@ -1663,19 +1669,29 @@ var my;
                             return el1.localeCompare(el2) * -1;
                         }
                     });
-                    this.filterBy(this.currentFilterBy);
+                    this.filterRows();
                     if (notify) {
                         this.dispatch(this, undefined);
                     }
                 }
-                filterBy(filterValue) {
-                    this.currentFilterBy = filterValue;
+                filteBy(filterValue) {
+                    var f;
+                    if (filterValue) {
+                        f = new my.data.Filter("ALL_COLUMNS", filterValue);
+                        this.filters.add(f);
+                    }
+                    else {
+                        this.filters.remove("ALL_COLUMNS");
+                    }
+                    this.filterRows();
+                }
+                filterRows() {
                     var currentPage = 1;
                     var itemsInPage = 0;
                     var visibleItems = 0;
                     this.rows.forEach((row, idx) => {
-                        if ((filterValue != undefined) && (filterValue != "")) {
-                            row.__bindVisible = row.hasValue(filterValue);
+                        if (this.filters.items.length > 0) {
+                            row.__bindVisible = row.hasValues(this.filters.items);
                         }
                         else {
                             row.__bindVisible = true;
@@ -1694,13 +1710,13 @@ var my;
                     return visibleItems;
                 }
             }
-            data_2.DataTable = DataTable;
+            data_3.DataTable = DataTable;
             class DataColumn {
                 constructor() {
                     this.Type = "observable";
                 }
             }
-            data_2.DataColumn = DataColumn;
+            data_3.DataColumn = DataColumn;
             class DataRow {
                 constructor(data, table) {
                     this.items = {};
@@ -1772,9 +1788,9 @@ var my;
                 }
                 hasValues(arrFilters) {
                     var bRet = false;
-                    this.itemsArray.forEach((col, idx) => {
-                        arrFilters.forEach((f, idx) => {
-                            if (col.Name.toUpperCase() == f.column.toUpperCase()) {
+                    arrFilters.forEach((f, fIdx) => {
+                        this.itemsArray.forEach((col, cIdx) => {
+                            if ((f.column == "ALL_COLUMNS") || (col.Name.toUpperCase() == f.column.toUpperCase())) {
                                 if (col.Data.value.toString().toLocaleUpperCase().includes(f.value.toLocaleUpperCase())) {
                                     bRet = true;
                                 }
@@ -1813,18 +1829,18 @@ var my;
                     });
                 }
             }
-            data_2.DataRow = DataRow;
+            data_3.DataRow = DataRow;
             class Events {
                 constructor() {
                     this.Modified = new my.core.events.core("data_Modified");
                     this.Loaded = new my.core.events.core("data_Loaded");
                 }
             }
-            data_2.Events = Events;
-            class filter {
+            data_3.Events = Events;
+            class filterManager {
                 constructor(parent) {
-                    this.items = [];
                     this.parentTable = parent;
+                    this.items = [];
                 }
                 get SQL() {
                     var sSQL = ' AND ';
@@ -1852,12 +1868,13 @@ var my;
                         }
                     }
                     else {
-                        this.add(column, value);
+                        var f = new my.data.Filter(column, value);
+                        this.add(f);
                     }
                     this.parentTable.dispatch(this, undefined);
                 }
-                add(column, value) {
-                    this.items.push({ dataColumn: column, value: value });
+                add(filter) {
+                    this.items.push(filter);
                 }
                 remove(column) {
                     var idx = this.indexOf(column);
@@ -1866,14 +1883,14 @@ var my;
                 indexOf(dataColumn) {
                     var ret = undefined;
                     this.items.forEach(function (item, idx) {
-                        if (item.dataColumn === dataColumn) {
+                        if (item.column === dataColumn) {
                             ret = idx;
                         }
                     });
                     return ret;
                 }
             }
-            data_2.filter = filter;
+            data_3.filterManager = filterManager;
             ;
         })(data = core.data || (core.data = {}));
         ;
@@ -2462,7 +2479,7 @@ var my;
 (function (my) {
     "use strict";
     let data;
-    (function (data_3) {
+    (function (data_4) {
         let binding;
         (function (binding) {
             class Observable extends my.core.data.binding.Observable {
@@ -2484,15 +2501,15 @@ var my;
                 }
             }
             binding.ComputedObservable = ComputedObservable;
-        })(binding = data_3.binding || (data_3.binding = {}));
+        })(binding = data_4.binding || (data_4.binding = {}));
         ;
         class Filter {
-            constructor(col = undefined, val = undefined) {
+            constructor(col = "ALL_COLUMNS", val) {
                 this.column = col;
                 this.value = val;
             }
         }
-        data_3.Filter = Filter;
+        data_4.Filter = Filter;
         class DataSet extends my.core.data.DataSet {
             constructor(tables) {
                 super(tables);
@@ -2503,7 +2520,7 @@ var my;
                 this.workMode = "online";
                 this._isLiveUpdate = false;
                 this._generateTables(this.tableNames);
-                this.server = new data_3.ServerDataSet(this);
+                this.server = new data_4.ServerDataSet(this);
                 this.events.Modified.subscribe(this, this.onChildElementDataChange.bind(this));
             }
             get url() {
@@ -2574,22 +2591,11 @@ var my;
                 return ret;
             }
         }
-        data_3.DataSet = DataSet;
+        data_4.DataSet = DataSet;
         class DataTable extends my.core.data.DataTable {
             constructor(val, name = undefined) {
                 super(val, name);
                 this.columns = [];
-            }
-            get filter() {
-                return this._filter;
-            }
-            set filter(val) {
-                this._filter = val;
-                if (val == undefined) {
-                    this.rows.forEach((itm, idx) => {
-                        itm.__bindVisible = true;
-                    });
-                }
             }
             get length() {
                 return this.rows.length;
@@ -2709,10 +2715,10 @@ var my;
                 return arrRet;
             }
         }
-        data_3.DataTable = DataTable;
+        data_4.DataTable = DataTable;
         class DataColumn extends my.core.data.DataColumn {
         }
-        data_3.DataColumn = DataColumn;
+        data_4.DataColumn = DataColumn;
         class DataRow extends my.core.data.DataRow {
             constructor(data, table) {
                 super(data, table);
@@ -2746,7 +2752,7 @@ var my;
                 this.items[i.Name] = i.Data;
             }
         }
-        data_3.DataRow = DataRow;
+        data_4.DataRow = DataRow;
     })(data = my.data || (my.data = {}));
 })(my || (my = {}));
 var my;
@@ -5507,7 +5513,7 @@ var my;
 (function (my) {
     "use strict";
     let data;
-    (function (data_4) {
+    (function (data_5) {
         class LocalDataPackage {
         }
         class MasterSyncPakage {
@@ -5522,7 +5528,7 @@ var my;
             constructor(localDb) {
                 this._dcSync = [];
                 this._localDb = localDb;
-                var schema = new data_4.TableSchemaInfo();
+                var schema = new data_5.TableSchemaInfo();
                 schema.tableName = LocalSyncManager.MasterTableName;
                 schema.tableKey = "URL";
                 schema.AutoIncrementKey = false;
@@ -5608,7 +5614,7 @@ var my;
                 this._cacheTableName = "CacheData";
                 this._expiredInMinutes = 10;
                 this.eventNotificationCode = "DataSet";
-                this.localDb = data_4.LocalDb.getInstance("SyncDB", this.initSyncManager.bind(this));
+                this.localDb = data_5.LocalDb.getInstance("SyncDB", this.initSyncManager.bind(this));
                 this.ds = val;
             }
             get CacheStorage() {
@@ -5679,12 +5685,12 @@ var my;
                     }
                 }
                 var lstTable = new Array();
-                var schema = new data_4.TableSchemaInfo();
+                var schema = new data_5.TableSchemaInfo();
                 schema.tableName = tableNameDataToSend;
                 schema.tableKey = "UID";
                 schema.AutoIncrementKey = false;
                 lstTable.push(schema);
-                schema = new data_4.TableSchemaInfo();
+                schema = new data_5.TableSchemaInfo();
                 schema.tableName = tableNameSendData;
                 schema.tableKey = "UID";
                 schema.AutoIncrementKey = false;
@@ -5744,12 +5750,12 @@ var my;
                 var tableNameDataToSend = tableName + "_DataToSend";
                 var tableNameSendData = tableName + "_SendData";
                 var lstTable = new Array();
-                var schema = new data_4.TableSchemaInfo();
+                var schema = new data_5.TableSchemaInfo();
                 schema.tableName = tableNameDataToSend;
                 schema.tableKey = "UID";
                 schema.AutoIncrementKey = false;
                 lstTable.push(schema);
-                schema = new data_4.TableSchemaInfo();
+                schema = new data_5.TableSchemaInfo();
                 schema.tableName = tableNameSendData;
                 schema.tableKey = "UID";
                 schema.AutoIncrementKey = false;
@@ -5773,7 +5779,7 @@ var my;
                 lstTableNames.forEach((tableName, ind) => {
                     if (this.stack.findIndex(x => (x == this.generateCacheTableName(tableName))) == -1) {
                         this.stack.push(this.generateCacheTableName(tableName));
-                        var schema = new data_4.TableSchemaInfo();
+                        var schema = new data_5.TableSchemaInfo();
                         schema.tableName = this.generateCacheTableName(tableName);
                         schema.tableKey = "UID";
                         schema.AutoIncrementKey = false;
@@ -5782,7 +5788,7 @@ var my;
                 });
                 if (lstTable.length > 0) {
                     if (loadAllData) {
-                        var schema = new data_4.TableSchemaInfo();
+                        var schema = new data_5.TableSchemaInfo();
                         schema.tableName = this._cacheTableName;
                         schema.tableKey = "URL";
                         schema.AutoIncrementKey = false;
@@ -6125,7 +6131,7 @@ var my;
                 return tableName + "_" + this.ds.url;
             }
         }
-        data_4.LocalDataSet = LocalDataSet;
+        data_5.LocalDataSet = LocalDataSet;
         ;
     })(data = my.data || (my.data = {}));
     ;
@@ -6135,7 +6141,7 @@ var my;
 (function (my) {
     "use strict";
     let data;
-    (function (data_5) {
+    (function (data_6) {
         class ServerDataSet {
             constructor(val) {
                 this.eventNotificationCode = "DataSet";
@@ -6326,7 +6332,7 @@ var my;
                 my.events.global.standard.dispatch(sender, this.eventNotificationCode, responce);
             }
         }
-        data_5.ServerDataSet = ServerDataSet;
+        data_6.ServerDataSet = ServerDataSet;
         ;
     })(data = my.data || (my.data = {}));
     ;
@@ -6336,10 +6342,10 @@ var my;
 (function (my) {
     "use strict";
     let data;
-    (function (data_6) {
+    (function (data_7) {
         class TableSchemaInfo {
         }
-        data_6.TableSchemaInfo = TableSchemaInfo;
+        data_7.TableSchemaInfo = TableSchemaInfo;
         class LocalDb {
             constructor(DatabaseName, onSuccess = undefined) {
                 this._onSuccess = undefined;
@@ -6471,7 +6477,7 @@ var my;
                 console.log("Error init local DB");
             }
         }
-        data_6.LocalDb = LocalDb;
+        data_7.LocalDb = LocalDb;
     })(data = my.data || (my.data = {}));
 })(my || (my = {}));
 var my;
@@ -6910,7 +6916,7 @@ var my;
                         if (this._parentDropdown.value) {
                             this.disabled = false;
                             var fi = new my.data.Filter(this.parentFilterColumn, this._parentDropdown.value.toString());
-                            this.data.filter = fi;
+                            this.data.filters.add(fi);
                             this.ctlList.data = this.data;
                         }
                         else {
@@ -9422,11 +9428,13 @@ var my;
                 i.events.click.subscribe(this, this.deleteRow.bind(this), row);
             }
             _onFilterChange(s, e, d) {
-                var bindVisible = this.dataTable.filterBy(this.filtering.currentSearchBy);
+                var f = new my.data.Filter(undefined, this.filtering.currentSearchBy);
+                this.dataTable.filters.add(f);
+                var bindVisible = this.dataTable.filterRows();
                 this.pagination.pageCount = Math.ceil(bindVisible / this.pagination.pageSize);
             }
             _onPaginationPageSizeChange(s, e, d) {
-                this.dataTable.filterBy(this.filtering.currentSearchBy);
+                this._onFilterChange(s, e, d);
             }
             _onPaginationPageChange(s, e, d) {
                 this.currentPage = this.pagination.pageCurrent;

@@ -154,7 +154,7 @@ namespace my {
 
                     this.divPopucCtlList.hidden = true;
                     this.divPopucCtlList.appendChild(this.ctlList.element);
-                    
+
 
                     this.element.appendChild(this.divPopucCtlList);
 
@@ -215,7 +215,7 @@ namespace my {
                             // we have a parent and need to filter by it's value
                             //this._filterBy(this.parentFilterColumn, this._parentDropdown.value.toString());
                             var fi = new my.data.Filter(this.parentFilterColumn, this._parentDropdown.value.toString());
-                            this.data.filter = fi;
+                            this.data.filters.add(fi);
                             this.ctlList.data = this.data;
                         } else {
                             this.disabled = true; // if parent exist we do not change ths until parent have value
@@ -277,7 +277,7 @@ namespace my {
                     if (this.closeEventHandle) { // prevent another lisener if second click on the button
                         return;
                     }
-                    
+
                     this.ctlList.css.add(this.css.currentTeheme.active); // add class active 
                     this.elPopupLabel.style.width = this.ctlTrigger.element.clientWidth + "px";
                     if (this.label != undefined) {

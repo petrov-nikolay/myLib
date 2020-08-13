@@ -66,11 +66,11 @@ namespace my {
 
 
 
-        export class Filter {
+        export class Filter implements my.data.iFilter {
             column: string;
             value: string;
 
-            constructor(col: string = undefined, val: string = undefined) {
+            constructor(col: string = "ALL_COLUMNS", val: string) {
                 this.column = col;
                 this.value = val;
             }
@@ -247,19 +247,19 @@ namespace my {
             columns: Array<DataColumn>;
             rows: Array<my.data.DataRow>;
 
-            private _filter: my.data.Filter;
-            get filter(): my.data.Filter {
-                return this._filter;
-            }
-            set filter(val: my.data.Filter) {
-                this._filter = val;
-                //clear old filter if val == undefined
-                if (val == undefined) {
-                    this.rows.forEach((itm: DataRow, idx) => {
-                        itm.__bindVisible = true;
-                    });
-                }
-            }
+            // private _filter: my.data.Filter;
+            // get filter(): my.data.Filter {
+            //     return this._filter;
+            // }
+            // set filter(val: my.data.Filter) {
+            //     this._filter = val;
+            //     //clear old filter if val == undefined
+            //     if (val == undefined) {
+            //         this.rows.forEach((itm: DataRow, idx) => {
+            //             itm.__bindVisible = true;
+            //         });
+            //     }
+            // }
 
 
             get length() {

@@ -39,7 +39,8 @@ namespace my {
             rows: Array<iDataRow>;
             columns: Array<DataColumn>;
 
-            filter: my.data.Filter;
+            filters: my.core.data.filterManager;
+
 
             newRow(): DataRow
             findFirst(Name: string, Value: string): my.data.DataRow
@@ -67,6 +68,10 @@ namespace my {
             addColumn(name: string, value: string | number | boolean);
         }
 
+        export class iFilter {
+            column: string;
+            value: string;
+        }
     } // end namespace data
 
 
@@ -186,7 +191,7 @@ namespace my {
                 tableName: string;
                 rows: Array<my.data.iDataRow>;
 
-                filters: filter;
+                filters: filterManager;
 
                 get value(): any {
                     return this.rows;
@@ -238,7 +243,7 @@ namespace my {
                     this.tableName = name;
                     this.pageCurrent = 1; //default paging
                     this.pageSize = 10; //default paging
-                    this.filters = new my.core.data.filter(this);
+                    this.filters = new my.core.data.filterManager(this);
                 }
 
 
@@ -268,23 +273,35 @@ namespace my {
                         }
                     });
 
-                    this.filterBy(this.currentFilterBy); // rerun the filter and paging so sorting can display corectly
+                    this.filterRows(); // rerun the filter and paging so sorting can display corectly
 
                     if (notify) {
                         this.dispatch(this, undefined);
                     }
                 }
 
-                currentFilterBy: string;
+
+                filteBy(filterValue: string) {
+                    var f: my.data.Filter;
+                    if (filterValue) {
+                        f = new my.data.Filter("ALL_COLUMNS", filterValue);
+                        this.filters.add(f);
+                    } else {
+                        this.filters.remove("ALL_COLUMNS")
+                    }
+                    this.filterRows();
+                }
+
                 //filter and page reset
-                filterBy(filterValue: string): number {
-                    this.currentFilterBy = filterValue;
+                filterRows(): number {
+
                     var currentPage = 1;
                     var itemsInPage = 0;
                     var visibleItems = 0;
                     this.rows.forEach((row: my.data.DataRow, idx) => {
-                        if ((filterValue != undefined) && (filterValue != "")) {
-                            row.__bindVisible = row.hasValue(filterValue);
+                        if (this.filters.items.length > 0) {
+                            //row.__bindVisible = row.hasValue(filterValue);
+                            row.__bindVisible = row.hasValues(this.filters.items);
                         } else {
                             row.__bindVisible = true;
                         }
@@ -418,12 +435,16 @@ namespace my {
                     return bRet;
                 }
 
-                hasValues(arrFilters: my.data.Filter[]): boolean {
+                hasValues(arrFilters: my.data.iFilter[]): boolean {
                     var bRet = false;
 
-                    this.itemsArray.forEach((col: DataColumn, idx) => {
-                        arrFilters.forEach((f: my.data.Filter, idx) => {
-                            if (col.Name.toUpperCase() == f.column.toUpperCase()) {
+                    arrFilters.forEach((f: my.data.Filter, fIdx) => {
+                        // use this logic when search in table is changed to work with creating multiple filter records 
+                        // that need to run with diferent type of filters so you can have serch frase filtering on already filtered items
+                        // if (this.items[f.column]) { }
+
+                        this.itemsArray.forEach((col: DataColumn, cIdx) => {
+                            if ((f.column == "ALL_COLUMNS") || (col.Name.toUpperCase() == f.column.toUpperCase())) {
                                 if (col.Data.value.toString().toLocaleUpperCase().includes(f.value.toLocaleUpperCase())) {
                                     bRet = true;
                                 }
@@ -491,9 +512,9 @@ namespace my {
             } // end class Events
 
 
-            export class filter {
+            export class filterManager {
                 parentTable: my.core.data.DataTable;
-                items: Array<{ dataColumn: String, value: String }> = [];
+                items: my.data.iFilter[];
 
                 operator: '=' | '!=' | '<' | '>' | '<=' | '>=';
 
@@ -515,6 +536,7 @@ namespace my {
 
                 constructor(parent: my.core.data.DataTable) {
                     this.parentTable = parent;
+                    this.items = [];
                 };
 
                 by(column: string, value: string) {
@@ -526,13 +548,15 @@ namespace my {
                             this.remove(column);
                         }
                     } else {
-                        this.add(column, value);
+                        var f = new my.data.Filter(column, value);
+                        this.add(f);
                     }
                     this.parentTable.dispatch(this, undefined);
                 }
 
-                add(column: string, value: string) {
-                    this.items.push({ dataColumn: column, value: value });
+
+                add(filter: my.data.iFilter) {
+                    this.items.push(filter);
                 }
 
                 remove(column: string) {
@@ -543,7 +567,7 @@ namespace my {
                 indexOf(dataColumn: string): number {
                     var ret: number = undefined;
                     this.items.forEach(function (item, idx) {
-                        if (item.dataColumn === dataColumn) {
+                        if (item.column === dataColumn) {
                             ret = idx;
                         }
                     });

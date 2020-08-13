@@ -603,7 +603,7 @@ declare namespace my {
             tableName: string;
             rows: Array<iDataRow>;
             columns: Array<DataColumn>;
-            filter: my.data.Filter;
+            filters: my.core.data.filterManager;
             newRow(): DataRow;
             findFirst(Name: string, Value: string): my.data.DataRow;
             subscribe(subscriber: object, handler: my.core.data.binding.iBindingHandler, defaultData?: any): any;
@@ -623,6 +623,10 @@ declare namespace my {
             getAsJSONReadyObject(): object;
             addColumn(name: string, value: string | number | boolean): any;
         }
+        class iFilter {
+            column: string;
+            value: string;
+        }
     }
     namespace core {
         namespace data {
@@ -641,7 +645,7 @@ declare namespace my {
             abstract class DataTable extends my.core.data.binding.Observable {
                 tableName: string;
                 rows: Array<my.data.iDataRow>;
-                filters: filter;
+                filters: filterManager;
                 get value(): any;
                 set value(val: any);
                 get length(): number;
@@ -651,8 +655,8 @@ declare namespace my {
                 abstract parse(arr: Array<Object>): any;
                 currentOrderBy: string;
                 orderBy(orderBy: string, type?: "ASC" | "DESC", notify?: boolean): void;
-                currentFilterBy: string;
-                filterBy(filterValue: string): number;
+                filteBy(filterValue: string): void;
+                filterRows(): number;
             }
             class DataColumn {
                 Name: string;
@@ -677,7 +681,7 @@ declare namespace my {
                 setAdded(): void;
                 setModified(): void;
                 hasValue(value: string): boolean;
-                hasValues(arrFilters: my.data.Filter[]): boolean;
+                hasValues(arrFilters: my.data.iFilter[]): boolean;
                 subscribe(subscriber: object, handler: my.core.data.binding.iBindingHandler, defaultData?: any): void;
                 private _handlerExists;
                 dispatch(sender: object, data: any): void;
@@ -687,17 +691,14 @@ declare namespace my {
                 Loaded: my.core.events.core;
                 constructor();
             }
-            class filter {
+            class filterManager {
                 parentTable: my.core.data.DataTable;
-                items: Array<{
-                    dataColumn: String;
-                    value: String;
-                }>;
+                items: my.data.iFilter[];
                 operator: '=' | '!=' | '<' | '>' | '<=' | '>=';
                 get SQL(): string;
                 constructor(parent: my.core.data.DataTable);
                 by(column: string, value: string): void;
-                add(column: string, value: string): void;
+                add(filter: my.data.iFilter): void;
                 remove(column: string): void;
                 indexOf(dataColumn: string): number;
             }
@@ -921,10 +922,10 @@ declare namespace my {
                 constructor(computeFunction: (data: any) => any);
             }
         }
-        class Filter {
+        class Filter implements my.data.iFilter {
             column: string;
             value: string;
-            constructor(col?: string, val?: string);
+            constructor(col: string, val: string);
         }
         class DataSet extends my.core.data.DataSet implements iDataSet {
             eventNotificationCode: string;
@@ -963,9 +964,6 @@ declare namespace my {
         class DataTable extends my.core.data.DataTable implements iDataTable {
             columns: Array<DataColumn>;
             rows: Array<my.data.DataRow>;
-            private _filter;
-            get filter(): my.data.Filter;
-            set filter(val: my.data.Filter);
             get length(): number;
             constructor(val: Array<Object> | Object, name?: string);
             parse(arr: Array<Object>): void;
