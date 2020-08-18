@@ -33,6 +33,8 @@ namespace my {
                 public currentScreenName: string;
                 public currentScreen: my.app.iScreen;
                 public previousScreen: my.app.iScreen;
+                sessionStart: Date;
+                seesionDuration: 30; //min
 
                 /**
                  *returns the URL to the current app based on the <script> definition in the HTML
@@ -43,9 +45,7 @@ namespace my {
                  */
                 get url(): string {
                     var sRet: string = document.getElementById("moduleScript").getAttribute('src');
-
                     sRet = sRet.substring(0, sRet.lastIndexOf("/"));
-
                     return sRet;
                 }
 
@@ -57,7 +57,7 @@ namespace my {
                     window.addEventListener('hashchange', this._onNavigationEvent.bind(this));
 
                     my.events.global.init();
-                };
+                }
 
                 //proxy the event to onNavigationEvent
                 private _onNavigationEvent(e: HashChangeEvent) {

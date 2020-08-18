@@ -1786,13 +1786,20 @@ var my;
                     });
                     return bRet;
                 }
-                hasValues(arrFilters) {
+                hasValues(arrFilters, isExactMatch = false) {
                     var bRet = false;
                     arrFilters.forEach((f, fIdx) => {
                         this.itemsArray.forEach((col, cIdx) => {
                             if ((f.column == "ALL_COLUMNS") || (col.Name.toUpperCase() == f.column.toUpperCase())) {
-                                if (col.Data.value.toString().toLocaleUpperCase().includes(f.value.toLocaleUpperCase())) {
-                                    bRet = true;
+                                if (isExactMatch) {
+                                    if (col.Data.value.toString() == f.value) {
+                                        bRet = true;
+                                    }
+                                }
+                                else {
+                                    if (col.Data.value.toString().toLocaleUpperCase().includes(f.value.toLocaleUpperCase())) {
+                                        bRet = true;
+                                    }
                                 }
                             }
                         });
@@ -2504,7 +2511,8 @@ var my;
         })(binding = data_4.binding || (data_4.binding = {}));
         ;
         class Filter {
-            constructor(col = "ALL_COLUMNS", val) {
+            constructor(col = "ALL_COLUMNS", val = undefined) {
+                this.column = "ALL_COLUMNS";
                 this.column = col;
                 this.value = val;
             }
@@ -4147,7 +4155,6 @@ var my;
                     sRet = sRet.substring(0, sRet.lastIndexOf("/"));
                     return sRet;
                 }
-                ;
                 _onNavigationEvent(e) {
                     var nav = this.getCurrentNavigationAddress();
                     if (this.currentScreenName != nav.screenname) {
@@ -7556,7 +7563,7 @@ var my;
                 }
                 bind(ds) {
                     var row = this.parentForm.dataRow;
-                    if (row.items) {
+                    if ((row) && (row.items)) {
                         if (row.items.hasOwnProperty(this.dataColumn)) {
                             var observableValue = row.items[this.dataColumn];
                             if (observableValue)

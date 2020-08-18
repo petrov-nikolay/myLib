@@ -67,10 +67,10 @@ namespace my {
 
 
         export class Filter implements my.data.iFilter {
-            column: string;
+            column: string = "ALL_COLUMNS";
             value: string;
 
-            constructor(col: string = "ALL_COLUMNS", val: string) {
+            constructor(col: string = "ALL_COLUMNS", val: string = undefined) {
                 this.column = col;
                 this.value = val;
             }

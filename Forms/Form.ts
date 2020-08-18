@@ -420,9 +420,7 @@ namespace my {
                     //this._applyOptions(); this will ovverride manual setup or just unnecesery ess with elements constantly
                     var row = this.parentForm.dataRow;
 
-                    if (row.items) {
-
-
+                    if ((row) && (row.items)) {
                         // all good now update the values
                         if (row.items.hasOwnProperty(this.dataColumn)) {
                             var observableValue = row.items[this.dataColumn];

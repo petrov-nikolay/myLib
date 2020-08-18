@@ -435,7 +435,7 @@ namespace my {
                     return bRet;
                 }
 
-                hasValues(arrFilters: my.data.iFilter[]): boolean {
+                hasValues(arrFilters: my.data.iFilter[], isExactMatch: boolean = false): boolean {
                     var bRet = false;
 
                     arrFilters.forEach((f: my.data.Filter, fIdx) => {
@@ -445,8 +445,14 @@ namespace my {
 
                         this.itemsArray.forEach((col: DataColumn, cIdx) => {
                             if ((f.column == "ALL_COLUMNS") || (col.Name.toUpperCase() == f.column.toUpperCase())) {
-                                if (col.Data.value.toString().toLocaleUpperCase().includes(f.value.toLocaleUpperCase())) {
-                                    bRet = true;
+                                if (isExactMatch) {
+                                    if (col.Data.value.toString() == f.value) {
+                                        bRet = true;
+                                    }
+                                } else {
+                                    if (col.Data.value.toString().toLocaleUpperCase().includes(f.value.toLocaleUpperCase())) {
+                                        bRet = true;
+                                    }
                                 }
                             }
                         });

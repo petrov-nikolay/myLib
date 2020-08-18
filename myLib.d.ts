@@ -681,7 +681,7 @@ declare namespace my {
                 setAdded(): void;
                 setModified(): void;
                 hasValue(value: string): boolean;
-                hasValues(arrFilters: my.data.iFilter[]): boolean;
+                hasValues(arrFilters: my.data.iFilter[], isExactMatch?: boolean): boolean;
                 subscribe(subscriber: object, handler: my.core.data.binding.iBindingHandler, defaultData?: any): void;
                 private _handlerExists;
                 dispatch(sender: object, data: any): void;
@@ -925,7 +925,7 @@ declare namespace my {
         class Filter implements my.data.iFilter {
             column: string;
             value: string;
-            constructor(col: string, val: string);
+            constructor(col?: string, val?: string);
         }
         class DataSet extends my.core.data.DataSet implements iDataSet {
             eventNotificationCode: string;
@@ -1432,6 +1432,8 @@ declare namespace my {
                 currentScreenName: string;
                 currentScreen: my.app.iScreen;
                 previousScreen: my.app.iScreen;
+                sessionStart: Date;
+                seesionDuration: 30;
                 get url(): string;
                 constructor(maincontainer: string);
                 private _onNavigationEvent;
