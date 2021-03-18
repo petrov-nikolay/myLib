@@ -14,7 +14,7 @@ the rest of the files are just the source code.
 
 Best to download the entire folder and open it with VSCode
 
-this framework is under development and currently in use in few startup projects.
+I created this framework as easy to use solution with no dependacies, it is not perfect but it is usable for most coomon tasks nedded 
 
-anyone interested in helping is welcome :)
+anyone needs help with it just ask :)
 
